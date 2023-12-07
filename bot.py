@@ -23,7 +23,6 @@ async def echo_handler(message: types.Message) -> None:
     except TypeError:
         await message.answer("NT!")
 
-
 async def main() -> None:
     await dp.start_polling(bot)
 
