@@ -14,17 +14,18 @@ def volume_checker(time_hours, time_minutes, api_response):
             json_data = json.load(file)
         except:
             print("Ошибка при чтении JSON файла")
-    result = {}
-    for key in json_data.keys():
-        try:
-            previous_volume = json_data[key]['volume']
-            current_volume = api_response[key]['volume']
-        except:
-            pass
-        finally:
-            if previous_volume > 0:
-                if ((current_volume / previous_volume) - 1) > 0.5:
-                    result[key] = {"change": ((current_volume / previous_volume) - 1) * 100, "cap": api_response[key]['cap']}
+    if json_data:
+        result = {}
+        for key in json_data.keys():
+            try:
+                previous_volume = json_data[key]['volume']
+                current_volume = api_response[key]['volume']
+            except:
+                pass
+            finally:
+                if previous_volume > 0:
+                    if ((current_volume / previous_volume) - 1) > 0.5:
+                        result[key] = {"change": ((current_volume / previous_volume) - 1) * 100, "cap": api_response[key]['cap']}
     return result
 
 
