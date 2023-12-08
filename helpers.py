@@ -10,7 +10,10 @@ def write_json(data, time_hours, time_mins):
 
 def volume_checker(time_hours, time_minutes, api_response):
     with open(f"data{time_hours}-{time_minutes}.txt", "r") as file:
-        json_data = json.load(file)
+        try:
+            json_data = json.load(file)
+        except:
+            print("Ошибка при чтении JSON файла")
     result = {}
     for key in json_data.keys():
         try:
@@ -19,8 +22,9 @@ def volume_checker(time_hours, time_minutes, api_response):
         except:
             pass
         finally:
-            if ((current_volume / previous_volume) - 1) > 0.5:
-                result[key] = {"change": ((current_volume / previous_volume) - 1) * 100, "cap": api_response[key]['cap']}
+            if previous_volume > 0:
+                if ((current_volume / previous_volume) - 1) > 0.5:
+                    result[key] = {"change": ((current_volume / previous_volume) - 1) * 100, "cap": api_response[key]['cap']}
     return result
 
 
