@@ -1,5 +1,6 @@
 import json
 
+
 def write_json(data, time_hours, time_mins):
     print("Создаём json файл")
     with open(f'data{time_hours}-{time_mins}.txt', 'w') as out_file:

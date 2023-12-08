@@ -43,9 +43,9 @@ async def schedule_task() -> None:
         await asyncio.sleep(60)
         current_time = time.localtime()
         if current_time.tm_min == 0 or current_time.tm_min == 30:
-            api_response = get_cryptocurrency() # Получаем ответ от API
-            changed_cryptos = volume_checker(current_time.tm_hour, current_time.tm_min, api_response) # Получаем имена нужных криптовалют
-            write_json(api_response, current_time.tm_hour, current_time.tm_min) # Записываем полученные данные в json
+            api_response = get_cryptocurrency()  # Получаем ответ от API
+            changed_cryptos = volume_checker(current_time.tm_hour, current_time.tm_min, api_response)  # Получаем имена нужных криптовалют
+            write_json(api_response, current_time.tm_hour, current_time.tm_min)  # Записываем полученные данные в json
             await cripto_signal(TG_ID, changed_cryptos)
 
 
