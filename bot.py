@@ -22,16 +22,12 @@ async def command_start_handler(message: Message) -> None:
 async def cripto_signal(id, response_json) -> None:
     current_names = list(response_json.keys())
     print(current_names)
-    try:
-        await bot.send_message(id, f"Найдено нужных криптовалют: {len(response_json)} ")
+    await bot.send_message(id, f"Найдено нужных криптовалют: {len(response_json)} ")
 
-        while current_names:
-            crypto_name = current_names.pop(0)
-            msg = f"{crypto_name} - Изменение: {round(response_json[crypto_name]['change'], 2)}% - Капитализация: {int(response_json[crypto_name]['cap'])} USD\n"
-            await bot.send_message(id, msg)
-
-    except TypeError:
-        pass
+    while current_names:
+        crypto_name = current_names.pop(0)
+        msg = f"{crypto_name} - Изменение: {round(response_json[crypto_name]['change'], 2)}% - Капитализация: {int(response_json[crypto_name]['cap'])} USD\n"
+        await bot.send_message(id, msg)
 
 
 async def create_dp() -> None:
@@ -44,9 +40,14 @@ async def schedule_task() -> None:
         current_time = time.localtime()
         if current_time.tm_min == 0 or current_time.tm_min == 30:
             api_response = get_cryptocurrency()  # Получаем ответ от API
-            changed_cryptos = volume_checker(current_time.tm_hour, current_time.tm_min, api_response)  # Получаем имена нужных криптовалют
-            write_json(api_response, current_time.tm_hour, current_time.tm_min)  # Записываем полученные данные в json
-            await cripto_signal(TG_ID, changed_cryptos)
+            changed_cryptos = volume_checker(current_time.tm_hour, current_time.tm_min,
+                                             api_response)  # Получаем имена нужных криптовалют
+            write_json(api_response, current_time.tm_hour,
+                       current_time.tm_min)  # Записываем полученные данные в json
+            if changed_cryptos:
+                await cripto_signal(TG_ID, changed_cryptos)
+            else:
+                print("Не нашлось подходящих криптовалют")
 
 
 async def main():
