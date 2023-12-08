@@ -18,8 +18,8 @@ def volume_checker(time_hours, time_minutes, api_response):
         result = {}
         for key in json_data.keys():
             try:
-                previous_volume = json_data[key]['volume']
-                current_volume = api_response[key]['volume']
+                previous_volume = json_data[key]['values']['USD']['volume24h']
+                current_volume = api_response[key]['values']['USD']['volume24h']
             except:
                 pass
             finally:
