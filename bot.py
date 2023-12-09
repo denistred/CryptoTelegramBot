@@ -19,14 +19,16 @@ async def command_start_handler(message: Message) -> None:
     await message.answer(f"Ваш id {message.from_user.id}!")
 
 
-async def cripto_signal(id, response_json) -> None:
+async def cripto_signal(id, response_json, api_response) -> None:
     current_names = list(response_json.keys())
+
     print(current_names)
     await bot.send_message(id, f"Найдено нужных криптовалют: {len(response_json)} ")
 
     while current_names:
+        api_volume = api_response[crypto_name]["volume24h"]
         crypto_name = current_names.pop(0)
-        msg = f"{crypto_name} - Изменение: {round(response_json[crypto_name]['change'], 2)}% - Капитализация: {int(response_json[crypto_name]['cap']):,} USD\n"
+        msg = f"{crypto_name} - Изменение: {round(response_json[crypto_name]['change'], 2)}%\nКапитализация: {int(response_json[crypto_name]['cap']):,} USD\nОбъём: {api_volume}$"
         await bot.send_message(id, msg)
 
 
@@ -47,7 +49,7 @@ async def schedule_task() -> None:
             write_json(api_response, current_time.tm_hour,
                        current_time.tm_min)  # Записываем полученные данные в json
             if changed_cryptos:
-                await cripto_signal(TG_ID, changed_cryptos)
+                await cripto_signal(TG_ID, changed_cryptos, api_response)
             else:
                 print("Не нашлось подходящих криптовалют")
 
