@@ -26,7 +26,7 @@ async def cripto_signal(id, response_json) -> None:
 
     while current_names:
         crypto_name = current_names.pop(0)
-        msg = f"{crypto_name} - Изменение: {round(response_json[crypto_name]['change'], 2)}% - Капитализация: {int(response_json[crypto_name]['cap'])} USD\n"
+        msg = f"{crypto_name} - Изменение: {round(response_json[crypto_name]['change'], 2)}% - Капитализация: {int(response_json[crypto_name]['cap']):,} USD\n"
         await bot.send_message(id, msg)
 
 
