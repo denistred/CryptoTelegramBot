@@ -26,8 +26,8 @@ async def cripto_signal(id, response_json, api_response) -> None:
     await bot.send_message(id, f"Найдено нужных криптовалют: {len(response_json)} ")
 
     while current_names:
-        api_volume = api_response[crypto_name]["volume24h"]
         crypto_name = current_names.pop(0)
+        api_volume = api_response[crypto_name]["volume24h"]
         msg = f"{crypto_name} - Изменение: {round(response_json[crypto_name]['change'], 2)}%\nКапитализация: {int(response_json[crypto_name]['cap']):,} USD\nОбъём: {api_volume}$"
         await bot.send_message(id, msg)
 
