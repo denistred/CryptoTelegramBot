@@ -19,7 +19,7 @@ def get_cryptocurrency():
         for coin in data['data']:
             try:
                 trade_volume_usd = coin['values']['USD']['volume24h']
-                raw_data[coin['name']] = {"volume24h": trade_volume_usd, "cap": int(coin['values']['USD']['marketCap'])}
+                raw_data[coin['name']] = {"rank": coin["rank"], "volume24h": trade_volume_usd, "cap": int(coin['values']['USD']['marketCap'])}
             except TypeError:
                 print("Ошибка обработки монеты: ", coin['name'])
     else:
@@ -27,3 +27,5 @@ def get_cryptocurrency():
     print("Получили JSON")
     print(raw_data)
     return raw_data
+
+print(get_cryptocurrency()['Bitcoin']['rank'])
